@@ -24,7 +24,7 @@ namespace AccountsService
 
 
         //[FromBody] form
-        [EnableCors("Dev")]
+        //[EnableCors("Dev")]
         [Route("RegisterAccount")]
         [HttpPost]
         public async Task<IActionResult> RegisterAccountAsync([FromBody]RegistrationRequest newAccount)
