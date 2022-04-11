@@ -9,11 +9,11 @@ namespace Accounts.Data.Dapper
 {
     public class AccountRepository : IAccountRepository
     {
-        private readonly IConfiguration _config;
+        //private readonly IConfiguration _config;
 
-        public AccountRepository(IConfiguration config)
+        public AccountRepository()//IConfiguration config)
         {
-            _config = config;
+            //_config = config;
         }
 
         public async Task<int> AddAsync(MerchantAccount newAccount)

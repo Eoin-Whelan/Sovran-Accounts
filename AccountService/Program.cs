@@ -29,7 +29,8 @@ builder.Services.AddDbContext<AccountsContext>(
                         Convert Zero Datetime=True; Allow User Variables=True;"));
 
 
-// DEPENDENCY INJECTION
+// DEPENDENCY INJECTIONconfig
+
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ILoginRequestValidator, LoginRequestValidator>();
