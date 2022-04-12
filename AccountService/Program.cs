@@ -67,8 +67,8 @@ builder.Services.AddSwaggerGen(c =>
 
     });
     // Set the comments path for the Swagger JSON and UI.
-    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+    //var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    //c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
 //  Enable CORS for local testing.

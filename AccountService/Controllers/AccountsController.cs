@@ -32,22 +32,14 @@ namespace AccountsService
             try
             {
                 var result = await _registrationValidator.Register(newAccount);
-
-                if(result != -1)
-                {
-                    return Ok();
-                }
-                else
-                {
-                    return BadRequest("Internal error occurred.");
-                }
+                return Ok(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError("Payment validation threw an exception : ", ex);
+                _logger.LogError("Registration Failure");
 
-                JsonResult result = new JsonResult("Error:" + ex.Message);
-                return (result);
+                JsonResult result = new JsonResult("Internal Error Has Occurred.");
+                return BadRequest(-1);
             }
         }
 

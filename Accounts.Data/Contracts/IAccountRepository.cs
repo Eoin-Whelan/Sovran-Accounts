@@ -13,7 +13,7 @@ namespace Accounts.Data.Contracts
         Task<int> GetByUsername(string username);
 
         Task<IReadOnlyList<MerchantAccount>> GetAllAsync();
-        Task<int> AddAsync(MerchantAccount entity);
+        string AddMerchant(MerchantAccount entity);
         Task<int> UpdateAsync(MerchantAccount entity);
         Task<int> DeleteAsync(int id);
         Task<int> AttemptLogin(string username, string password);

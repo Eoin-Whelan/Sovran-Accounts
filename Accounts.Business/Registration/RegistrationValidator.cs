@@ -25,21 +25,16 @@ namespace Accounts.Business.Registration
             int retrievedId;
             try
             {
-
-                //request.NewAccount = GenerateImageLink(request.NewAccount);
-                //request.NewCatalog.ProfileImg = request.NewAccount.ProfileImg;
+                //  Generate image associated with account for 
+                request.NewAccount = GenerateImageLink(request.NewAccount);
+                request.NewCatalog.ProfileImg = request.NewAccount.ProfileImg;
                 //  Send create req to catalog service
                 await _catalogApiProxy.CatalogInsertMerchantAsync(request.NewCatalog);
 
                 // Send request to Payment service *here*
 
                 //  Post to sql table
-                var result = await _unitOfWork.Accounts.AddAsync(request.NewAccount);
-
-                if (result != 1)
-                {
-                    throw new Exception("Internal error.");
-                }
+                var result = _unitOfWork.Accounts.AddMerchant(request.NewAccount);
                 retrievedId = await _unitOfWork.Accounts.GetByUsername(request.NewAccount.Username);
             }
             catch(Exception ex)
@@ -47,7 +42,6 @@ namespace Accounts.Business.Registration
                 retrievedId = -1;
             }
             return retrievedId;
-
         }
 
         public string GenerateStripeId(RegistrationRequest request)

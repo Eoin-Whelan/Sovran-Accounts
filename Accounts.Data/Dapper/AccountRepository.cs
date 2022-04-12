@@ -9,22 +9,24 @@ namespace Accounts.Data.Dapper
 {
     public class AccountRepository : IAccountRepository
     {
-        //private readonly IConfiguration _config;
+        private readonly IConfiguration _config;
 
-        public AccountRepository()//IConfiguration config)
+        public AccountRepository(IConfiguration config)
         {
-            //_config = config;
+            _config = config;
         }
 
-        public async Task<int> AddAsync(MerchantAccount newAccount)
+        public string AddMerchant(MerchantAccount newAccount)
         {
-            var conn = GetConnection();
             try
             {
-                using (conn)
-                {
-                    conn.Open();
-                    string insertQuery = @"INSERT INTO Merchants(MerchantId,
+                if (!DoesExist(newAccount.Username)){
+                    var conn = GetConnection();
+
+                    using (conn)
+                    {
+                        conn.Open();
+                        string insertQuery = @"INSERT INTO Merchants(MerchantId,
                                                                 Username, 
                                                                 StripeId, 
                                                                 CatalogId, 
@@ -40,7 +42,8 @@ namespace Accounts.Data.Dapper
                                                                 County, 
                                                                 Postcode, 
                                                                 SupportPhone, 
-                                                                SupportEmail) 
+                                                                SupportEmail,
+                                                                ProfileImg) 
                                                        VALUES (@MerchantId, 
                                                                @Username, 
                                                                @StripeId, 
@@ -57,14 +60,27 @@ namespace Accounts.Data.Dapper
                                                                @County, 
                                                                @Postcode, 
                                                                @SupportPhone, 
-                                                               @SupportEmail)";
-                    var result = await conn.ExecuteAsync(insertQuery, newAccount);
-                    return result;
+                                                               @SupportEmail,
+                                                               @ProfileImg)";
+                        var result = conn.Execute(insertQuery, newAccount);
+                        if (result != 0)
+                        {
+                            return "Success";
+                        }
+                        else
+                        {
+                            return "Failure";
+                        }
+                    }
+                }
+                else
+                {
+                    return "Duplicate Username Found. Please try again.";
                 }
             }
             catch (Exception ex)
             {
-                return -1;
+                return "Internal Error Occurred. Please contact system administrator @ EoinWhelanDev@Gmail.com";
             }
 
         }
@@ -163,6 +179,27 @@ namespace Accounts.Data.Dapper
         {
             throw new NotImplementedException();
         }
+
+        public bool DoesExist(string username)
+        {
+            try
+            {
+                var conn = GetConnection();
+                using (conn)
+                {
+                    var parameters = new { UserName = username };
+                    var sql = "SELECT Username FROM Merchants where Username = @UserName";
+                    var result = conn.Query(sql, parameters).Any();
+                    return result;
+                }
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+
 
         public MySqlConnection GetConnection()
         {
