@@ -3,26 +3,26 @@ using Accounts.Model;
 using Accounts.Model.Registration;
 using Accounts.ServiceClients.Catalog.ApiProxy;
 using Accounts.ServiceClients.Cloudinary;
-
+using AccountService.ServiceClients.Payment.ApiProxy;
 
 namespace Accounts.Business.Registration
 {
     public class RegistrationValidator : IRegistrationValidator
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IApiProxy _catalogApiProxy;
-        private readonly IApiProxy _paymentApiProxy;
+        private readonly ICatalogProxy _catalogApiProxy;
+        private readonly IPaymentProxy _paymentApiProxy;
         private readonly IImageHandler _imageHandler;
-        public RegistrationValidator(IUnitOfWork unitOfWork, IApiProxy apiProxy, IImageHandler imageHandler)
+        public RegistrationValidator(IUnitOfWork unitOfWork, ICatalogProxy apiProxy, IImageHandler imageHandler)
         {
             _unitOfWork = unitOfWork;
             _catalogApiProxy = apiProxy;
             _imageHandler = imageHandler;
         }
 
-        public async Task<int> Register(RegistrationRequest request)
+        public async Task<RegistrationResponse> Register(Model.Registration.RegistrationRequest request)
         {
-            int retrievedId;
+            RegistrationResponse response = null;
             try
             {
                 //  Generate image associated with account for 
@@ -35,20 +35,15 @@ namespace Accounts.Business.Registration
 
                 //  Post to sql table
                 var result = _unitOfWork.Accounts.AddMerchant(request.NewAccount);
-                retrievedId = await _unitOfWork.Accounts.GetByUsername(request.NewAccount.Username);
+                //retrievedId = await _unitOfWork.Accounts.GetByUsername(request.NewAccount.Username);
             }
             catch(Exception ex)
             {
-                retrievedId = -1;
+                response.errorMsg = "Internal server error occured. Please contact system administrator.";
+                response.result = false;
             }
-            return retrievedId;
+            return response;
         }
-
-        public string GenerateStripeId(RegistrationRequest request)
-        {
-            return "";
-        }
-
         public MerchantAccount GenerateImageLink(MerchantAccount request)
         {
             string profileImg = _imageHandler.PostImage(request.ProfileImg, request.Username, "profileImg");

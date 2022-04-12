@@ -18,70 +18,56 @@ namespace Accounts.Data.Dapper
 
         public string AddMerchant(MerchantAccount newAccount)
         {
-            try
-            {
-                if (!DoesExist(newAccount.Username)){
-                    var conn = GetConnection();
+            //var conn = GetConnection();
+            //try
+            //{
+            //    using (conn)
+            //    {
+            //        conn.Open();
+            //        string insertQuery = @"INSERT INTO Merchants(MerchantId,
+            //                                                    Username, 
+            //                                                    StripeId, 
+            //                                                    CatalogId, 
+            //                                                    MerchantEmail, 
+            //                                                    PhoneNumber, 
+            //                                                    Password, 
+            //                                                    FirstName, 
+            //                                                    Surname, 
+            //                                                    DateOfBirth, 
+            //                                                    MerchantAddressLineOne, 
+            //                                                    MerchantAddressLineTwo, 
+            //                                                    MerchantAddressLineThree, 
+            //                                                    County, 
+            //                                                    Postcode, 
+            //                                                    SupportPhone, 
+            //                                                    SupportEmail) 
+            //                                           VALUES (@MerchantId, 
+            //                                                   @Username, 
+            //                                                   @StripeId, 
+            //                                                   @CatalogId, 
+            //                                                   @MerchantEmail, 
+            //                                                   @PhoneNumber, 
+            //                                                   @Password, 
+            //                                                   @FirstName, 
+            //                                                   @Surname, 
+            //                                                   @DateOfBirth, 
+            //                                                   @MerchantAddressLineOne, 
+            //                                                   @MerchantAddressLineTwo, 
+            //                                                   @MerchantAddressLineThree, 
+            //                                                   @County, 
+            //                                                   @Postcode, 
+            //                                                   @SupportPhone, 
+            //                                                   @SupportEmail)";
+            //        var result = conn.Execute(insertQuery, newAccount);
+            //        return result;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    return -1;
+            //}
 
-                    using (conn)
-                    {
-                        conn.Open();
-                        string insertQuery = @"INSERT INTO Merchants(MerchantId,
-                                                                Username, 
-                                                                StripeId, 
-                                                                CatalogId, 
-                                                                MerchantEmail, 
-                                                                PhoneNumber, 
-                                                                Password, 
-                                                                FirstName, 
-                                                                Surname, 
-                                                                DateOfBirth, 
-                                                                MerchantAddressLineOne, 
-                                                                MerchantAddressLineTwo, 
-                                                                MerchantAddressLineThree, 
-                                                                County, 
-                                                                Postcode, 
-                                                                SupportPhone, 
-                                                                SupportEmail,
-                                                                ProfileImg) 
-                                                       VALUES (@MerchantId, 
-                                                               @Username, 
-                                                               @StripeId, 
-                                                               @CatalogId, 
-                                                               @MerchantEmail, 
-                                                               @PhoneNumber, 
-                                                               @Password, 
-                                                               @FirstName, 
-                                                               @Surname, 
-                                                               @DateOfBirth, 
-                                                               @MerchantAddressLineOne, 
-                                                               @MerchantAddressLineTwo, 
-                                                               @MerchantAddressLineThree, 
-                                                               @County, 
-                                                               @Postcode, 
-                                                               @SupportPhone, 
-                                                               @SupportEmail,
-                                                               @ProfileImg)";
-                        var result = conn.Execute(insertQuery, newAccount);
-                        if (result != 0)
-                        {
-                            return "Success";
-                        }
-                        else
-                        {
-                            return "Failure";
-                        }
-                    }
-                }
-                else
-                {
-                    return "Duplicate Username Found. Please try again.";
-                }
-            }
-            catch (Exception ex)
-            {
-                return "Internal Error Occurred. Please contact system administrator @ EoinWhelanDev@Gmail.com";
-            }
+            return "";
 
         }
 
@@ -203,6 +189,7 @@ namespace Accounts.Data.Dapper
 
         public MySqlConnection GetConnection()
         {
+            return new MySqlConnection(_config.GetConnectionString("sql"));
             return new MySqlConnection(@"Server=sovran-accounts.cihpzkqwv66o.eu-west-1.rds.amazonaws.com;
                         Database=sovran_accounts;
                         User=notary;

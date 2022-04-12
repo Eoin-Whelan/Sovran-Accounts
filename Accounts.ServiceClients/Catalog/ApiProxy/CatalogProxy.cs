@@ -19,7 +19,7 @@ namespace Accounts.ServiceClients.Catalog.ApiProxy
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial interface IApiProxy
+    public partial interface ICatalogProxy
     {
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -45,13 +45,13 @@ namespace Accounts.ServiceClients.Catalog.ApiProxy
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class ApiProxy : IApiProxy
+    public partial class CatalogProxy : ICatalogProxy
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public ApiProxy(string baseUrl, System.Net.Http.HttpClient httpClient)
+        public CatalogProxy(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl;
             _httpClient = httpClient;
@@ -501,7 +501,7 @@ namespace Accounts.ServiceClients.Catalog.ApiProxy
         public string Id { get; set; }
 
         [Newtonsoft.Json.JsonProperty("isDeleted", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = true;
 
     }
 

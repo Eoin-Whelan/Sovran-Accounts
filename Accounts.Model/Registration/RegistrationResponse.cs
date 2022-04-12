@@ -8,7 +8,9 @@ namespace Accounts.Model.Registration
 {
     public class RegistrationResponse
     {
-        public bool isRegistered { get; set; } = false;
-        public string? sessionId { get; set; } = null;
+        public bool result { get; set; } = false;
+        public int userId { get; set; }
+        public string? stripeOnBoardingUrl { get; set; }
+        public string? errorMsg { get; set; }
     }
 }

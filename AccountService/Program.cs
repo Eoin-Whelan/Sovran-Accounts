@@ -7,6 +7,7 @@ using Accounts.Data.Dapper;
 using Accounts.Model;
 using Accounts.ServiceClients.Catalog.ApiProxy;
 using Accounts.ServiceClients.Cloudinary;
+using AccountService.ServiceClients.Payment.ApiProxy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -22,11 +23,7 @@ builder.Services.AddEndpointsApiExplorer();
 // DBCONTEXT CONFIG
 builder.Services.AddDbContext<AccountsContext>(
    options => options.UseMySQL(
-                     @"Server=sovran-accounts.cihpzkqwv66o.eu-west-1.rds.amazonaws.com;
-                        Database=sovran_accounts;
-                        User=notary;
-                        Password=B4rth0l0m3w!;
-                        Convert Zero Datetime=True; Allow User Variables=True;"));
+                     builder.Configuration.GetConnectionString("sql")));
 
 
 // DEPENDENCY INJECTIONconfig
@@ -38,7 +35,8 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 //builder.Services.AddScoped<Accounts.Business.Repository.IRepository<MerchantAccount, int>, OldAccountRepository>();
 
 
-builder.Services.AddScoped<IApiProxy>(x => new ApiProxy("https://sovran-catalog.azurewebsites.net", new HttpClient()));
+builder.Services.AddScoped<ICatalogProxy>(x => new CatalogProxy("https://sovran-catalog.azurewebsites.net", new HttpClient()));
+builder.Services.AddScoped<IPaymentProxy>(x => new PaymentProxy("https://sovran-payment.azurewebsites.net", new HttpClient()));
 builder.Services.AddScoped<IRegistrationValidator, RegistrationValidator>();
 
 builder.Services.AddScoped<IImageHandler, ImageHandler>(x => new ImageHandler());
