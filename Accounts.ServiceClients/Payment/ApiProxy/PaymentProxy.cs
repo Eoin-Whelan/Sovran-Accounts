@@ -17,13 +17,22 @@ namespace AccountService.ServiceClients.Payment.ApiProxy
 {
     using System = global::System;
 
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IPaymentProxy
     {
-        string BaseUrl { get; set; }
-        bool ReadResponseAsString { get; set; }
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<PaymentRegistrationResponse> RegisterAccountAsync(PaymentRegistrationRequest body);
 
-        Task RegisterAccountAsync(RegistrationRequest body);
-        Task RegisterAccountAsync(RegistrationRequest body, CancellationToken cancellationToken);
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        PaymentRegistrationResponse RegisterAccount(PaymentRegistrationRequest body);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<PaymentRegistrationResponse> RegisterAccountAsync(PaymentRegistrationRequest body, System.Threading.CancellationToken cancellationToken);
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v11.0.0.0))")]
@@ -63,15 +72,22 @@ namespace AccountService.ServiceClients.Payment.ApiProxy
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task RegisterAccountAsync(RegistrationRequest body)
+        public virtual System.Threading.Tasks.Task<PaymentRegistrationResponse> RegisterAccountAsync(PaymentRegistrationRequest body)
         {
             return RegisterAccountAsync(body, System.Threading.CancellationToken.None);
+        }
+
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual PaymentRegistrationResponse RegisterAccount(PaymentRegistrationRequest body)
+        {
+            return System.Threading.Tasks.Task.Run(async () => await RegisterAccountAsync(body, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task RegisterAccountAsync(RegistrationRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<PaymentRegistrationResponse> RegisterAccountAsync(PaymentRegistrationRequest body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/PaymentService/RegisterAccount");
@@ -86,6 +102,7 @@ namespace AccountService.ServiceClients.Payment.ApiProxy
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -110,7 +127,12 @@ namespace AccountService.ServiceClients.Payment.ApiProxy
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            var objectResponse_ = await ReadObjectResponseAsync<PaymentRegistrationResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
                         }
                         else
                         {
@@ -236,11 +258,19 @@ namespace AccountService.ServiceClients.Payment.ApiProxy
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial class RegistrationRequest
+    public partial class PaymentRegistrationRequest
     {
         [Newtonsoft.Json.JsonProperty("emailAddress", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string EmailAddress { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class PaymentRegistrationResponse
+    {
+        [Newtonsoft.Json.JsonProperty("onboardingUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string OnboardingUrl { get; set; }
 
     }
 

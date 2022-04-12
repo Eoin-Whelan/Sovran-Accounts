@@ -13,16 +13,23 @@ namespace Accounts.Business.Registration
         private readonly ICatalogProxy _catalogApiProxy;
         private readonly IPaymentProxy _paymentApiProxy;
         private readonly IImageHandler _imageHandler;
-        public RegistrationValidator(IUnitOfWork unitOfWork, ICatalogProxy apiProxy, IImageHandler imageHandler)
+        public RegistrationValidator(IUnitOfWork unitOfWork, ICatalogProxy catalogProxy, IPaymentProxy paymentProxy, IImageHandler imageHandler)
         {
             _unitOfWork = unitOfWork;
-            _catalogApiProxy = apiProxy;
+            _catalogApiProxy = catalogProxy;
+            _paymentApiProxy = paymentProxy;
             _imageHandler = imageHandler;
         }
 
-        public async Task<RegistrationResponse> Register(Model.Registration.RegistrationRequest request)
+        public async Task<RegistrationResponse> Register(RegistrationRequest request)
         {
-            RegistrationResponse response = null;
+            var registrationResponse = new RegistrationResponse();
+
+            var stripeRequest = new PaymentRegistrationRequest
+            {
+                EmailAddress = request.NewAccount.MerchantEmail
+                };
+            
             try
             {
                 //  Generate image associated with account for 
@@ -32,17 +39,24 @@ namespace Accounts.Business.Registration
                 await _catalogApiProxy.CatalogInsertMerchantAsync(request.NewCatalog);
 
                 // Send request to Payment service *here*
+                var paymentResponse = _paymentApiProxy.RegisterAccount(stripeRequest);
+
+                registrationResponse.stripeOnBoardingUrl = paymentResponse.OnboardingUrl;
 
                 //  Post to sql table
                 var result = _unitOfWork.Accounts.AddMerchant(request.NewAccount);
-                //retrievedId = await _unitOfWork.Accounts.GetByUsername(request.NewAccount.Username);
+                if(result != 1)
+                {
+                    return null;
+                }
+                registrationResponse.result = true;
             }
             catch(Exception ex)
             {
-                response.errorMsg = "Internal server error occured. Please contact system administrator.";
-                response.result = false;
+                registrationResponse.errorMsg = "Internal server error occured. Please contact system administrator.";
+                registrationResponse.result = false;
             }
-            return response;
+            return registrationResponse;
         }
         public MerchantAccount GenerateImageLink(MerchantAccount request)
         {
