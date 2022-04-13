@@ -30,11 +30,7 @@ namespace Accounts.ServiceClients.Cloudinary
             var uploadParams = new ImageUploadParams()
             {
                 PublicId = $"merchants/{username}/{location}",
-                EagerTransforms = new List<Transformation>()
-                {
-                    new EagerTransformation().Width(400).Height(400)
-                },
-
+                Transformation = new Transformation().Width(400).Height(400).Crop("limit"),
                 File = new FileDescription(image)
             };
             var uploadResult = cloudinary.Upload(uploadParams);

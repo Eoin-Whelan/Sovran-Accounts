@@ -54,6 +54,6 @@ namespace Accounts.Model
         [Required(ErrorMessage = "Missing information: Customer Contact E-Mail")]
         public string SupportEmail { get; set; }
 
-        public string ProfileImg { get; set; }
+        public string? ProfileImg { get; set; }
     }
 }

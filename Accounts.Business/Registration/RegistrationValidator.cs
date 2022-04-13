@@ -33,13 +33,16 @@ namespace Accounts.Business.Registration
             try
             {
                 //  Generate image associated with account for 
-                request.NewAccount = GenerateImageLink(request.NewAccount);
-                request.NewCatalog.ProfileImg = request.NewAccount.ProfileImg;
+                if(request.NewAccount.ProfileImg != null)
+                {
+                    request.NewAccount = GenerateImageLink(request.NewAccount);
+                    request.NewCatalog.ProfileImg = request.NewAccount.ProfileImg;
+                }
                 //  Send create req to catalog service
                 await _catalogApiProxy.CatalogInsertMerchantAsync(request.NewCatalog);
 
                 // Send request to Payment service *here*
-                var paymentResponse = _paymentApiProxy.RegisterAccount(stripeRequest);
+                var paymentResponse = await _paymentApiProxy.RegisterAccountAsync(stripeRequest);
 
                 registrationResponse.stripeOnBoardingUrl = paymentResponse.OnboardingUrl;
                 request.NewAccount.StripeId = paymentResponse.StripeAccountNo;
