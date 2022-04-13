@@ -271,6 +271,7 @@ namespace AccountService.ServiceClients.Payment.ApiProxy
     {
         [Newtonsoft.Json.JsonProperty("onboardingUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string OnboardingUrl { get; set; }
+        public string StripeAccountNo { get; set; }
 
     }
 

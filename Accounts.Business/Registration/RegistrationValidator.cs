@@ -42,6 +42,7 @@ namespace Accounts.Business.Registration
                 var paymentResponse = _paymentApiProxy.RegisterAccount(stripeRequest);
 
                 registrationResponse.stripeOnBoardingUrl = paymentResponse.OnboardingUrl;
+                request.NewAccount.StripeId = paymentResponse.StripeAccountNo;
 
                 //  Post to sql table
                 var result = _unitOfWork.Accounts.AddMerchant(request.NewAccount);
