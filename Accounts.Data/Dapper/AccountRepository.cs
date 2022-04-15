@@ -183,7 +183,7 @@ namespace Accounts.Data.Dapper
 
         }
 
-        public string GetStripeAccount(string username)
+        public Task<string> GetStripeAccount(string username)
         {
             if (string.IsNullOrEmpty(username))
             {
@@ -198,7 +198,7 @@ namespace Accounts.Data.Dapper
                     {
                         var parameters = new { UserName = username };
                         var sql = "SELECT StripeId FROM Merchants where Username = @UserName";
-                        var response = conn.QueryFirst<string>(sql, parameters);
+                        var response = conn.QueryFirstAsync<string>(sql, parameters);
                         return response;
                     }
                 }
