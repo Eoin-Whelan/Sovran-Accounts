@@ -183,6 +183,32 @@ namespace Accounts.Data.Dapper
 
         }
 
+        public string GetStripeAccount(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                throw new Exception(username + " does not exist.");
+            }
+            else
+            {
+                try
+                {
+                    var conn = GetConnection();
+                    using (conn)
+                    {
+                        var parameters = new { UserName = username };
+                        var sql = "SELECT StripeId FROM Merchants where Username = @UserName";
+                        var response = conn.QueryFirst<string>(sql, parameters);
+                        return response;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
+        }
+
 
         public MySqlConnection GetConnection()
         {

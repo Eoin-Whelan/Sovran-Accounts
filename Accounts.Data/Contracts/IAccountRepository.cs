@@ -17,5 +17,7 @@ namespace Accounts.Data.Contracts
         Task<int> UpdateAsync(MerchantAccount entity);
         Task<int> DeleteAsync(int id);
         Task<int> AttemptLogin(string username, string password);
+        Task<string> GetStripeAccount(string username);
+
     }
 }

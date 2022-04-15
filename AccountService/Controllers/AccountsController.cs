@@ -141,6 +141,17 @@ namespace AccountsService
             return Ok(DapperResult);
         }
 
+        [Route("RetrieveStripeAccount")]
+        [HttpPost]
+        public ActionResult RetrieveStripeAccount(string username)
+        {
+            var stripeId = _unitOfWork.Accounts.GetStripeAccount(username).Result;
+
+            //var ECFResult = _accountRepo.GetById(id);
+
+            return Ok(stripeId);
+        }
+
         [Route("NewLogin")]
         [HttpPost]
         public async Task<ActionResult> Login(string username, string password)
