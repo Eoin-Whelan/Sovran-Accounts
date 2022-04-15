@@ -143,7 +143,7 @@ namespace AccountsService
 
         [Route("RetrieveStripeAccount")]
         [HttpPost]
-        public ActionResult RetrieveStripeAccount(string username)
+        public async Task<ActionResult> RetrieveStripeAccount(string username)
         {
             var stripeId = _unitOfWork.Accounts.GetStripeAccount(username).Result;
 
