@@ -145,11 +145,18 @@ namespace AccountsService
         [HttpPost]
         public async Task<ActionResult> RetrieveStripeAccount(string username)
         {
-            var stripeId = _unitOfWork.Accounts.GetStripeAccount(username).Result;
+            try
+            {
+                var stripeId = _unitOfWork.Accounts.GetStripeAccount(username).Result;
+                return Ok(stripeId);
 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
             //var ECFResult = _accountRepo.GetById(id);
 
-            return Ok(stripeId);
         }
 
         [Route("NewLogin")]
