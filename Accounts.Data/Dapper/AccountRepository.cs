@@ -64,7 +64,7 @@ namespace Accounts.Data.Dapper
             }
             catch (Exception ex)
             {
-                return -1;
+                throw;
             }
         }
 
@@ -212,7 +212,7 @@ namespace Accounts.Data.Dapper
 
         public MySqlConnection GetConnection()
         {
-            return new MySqlConnection(_config.GetConnectionString("sql"));
+            //return new MySqlConnection(_config.GetConnectionString("sql"));
             return new MySqlConnection(@"Server=sovran-accounts.cihpzkqwv66o.eu-west-1.rds.amazonaws.com;
                         Database=sovran_accounts;
                         User=notary;
