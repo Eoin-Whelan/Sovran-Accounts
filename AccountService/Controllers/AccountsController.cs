@@ -39,6 +39,11 @@ namespace AccountsService
                 return BadRequest(-1);
             }
         }
+        /// <summary>
+        /// Test Endpoint for front-end handling. Returns response with google.ie link to mock Stripe onboarding transition.
+        /// </summary>
+        /// <param name="newAccount"></param>
+        /// <returns></returns>
         [Route("DummyRegister")]
         [HttpPost]
         public async Task<IActionResult> DummyRegister([FromBody] RegistrationRequest newAccount)
