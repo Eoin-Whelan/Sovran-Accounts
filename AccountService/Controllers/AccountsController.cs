@@ -50,7 +50,8 @@ namespace AccountsService
         {
             RegistrationResponse reply = new RegistrationResponse
             {
-                stripeOnBoardingUrl = "www.google.ie"
+                stripeOnBoardingUrl = "www.google.ie",
+                result = true,
             };
             return Ok(reply);
         }
