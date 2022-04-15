@@ -22,9 +22,6 @@ namespace AccountsService
             _unitOfWork = unitOfWork;
         }
 
-
-        //[FromBody] form
-        //[EnableCors("Dev")]
         [Route("RegisterAccount")]
         [HttpPost]
         public async Task<IActionResult> RegisterAccountAsync([FromBody]RegistrationRequest newAccount)
@@ -41,6 +38,16 @@ namespace AccountsService
                 JsonResult result = new JsonResult("Internal Error Has Occurred.");
                 return BadRequest(-1);
             }
+        }
+        [Route("DummyRegister")]
+        [HttpPost]
+        public async Task<IActionResult> DummyRegister([FromBody] RegistrationRequest newAccount)
+        {
+            RegistrationResponse reply = new RegistrationResponse
+            {
+                stripeOnBoardingUrl = "www.google.ie"
+            };
+            return Ok(reply);
         }
 
         // GET: AccountsController
