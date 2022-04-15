@@ -1,16 +1,13 @@
 using Accounts.Business;
 using Accounts.Business.Login;
 using Accounts.Business.Registration;
-using Accounts.Business.Repository;
 using Accounts.Data.Contracts;
 using Accounts.Data.Dapper;
-using Accounts.Model;
 using Accounts.ServiceClients.Catalog.ApiProxy;
 using Accounts.ServiceClients.Cloudinary;
 using AccountService.ServiceClients.Payment.ApiProxy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +24,8 @@ builder.Services.AddDbContext<AccountsContext>(
 
 
 // DEPENDENCY INJECTIONconfig
+
+//Web.config test
 
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -47,15 +46,15 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "Catalog Service API",
+        Title = "Account Service API",
         Description =
-            "<h2>CatalogController is an API for all Catalog service business logic.</h2><br>" +
+            "<h2>AccountController is an API for all Account service business logic.</h2><br>" +
             "This functionality extends to:<ul>" +
-            "<li> Inserting a new catalog(Registration flow)" +
-            "<li> Inserting a new item for a given merchant." +
-            "<li> Update an existing item's details." +
-            "<li> Updating a merchant's public details (e.g.Support information)" +
-            "<li> Retrieving a given merchant's entire catalog (Browsing purposes).</ul>"
+            "<li> Handles registration flow for users, communicating with Payment + Catalog services." +
+            "<li> Login validation" +
+            "<li> Update a merchant's personal information." +
+            "<li> Retrieving a merchant's personal information." +
+            "</ul>"
         ,
         Contact = new OpenApiContact
         {

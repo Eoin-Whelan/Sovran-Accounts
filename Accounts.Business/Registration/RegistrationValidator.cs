@@ -35,8 +35,14 @@ namespace Accounts.Business.Registration
                 //  Generate image associated with account for 
                 if(request.NewAccount.ProfileImg != null)
                 {
-                    request.NewAccount = GenerateImageLink(request.NewAccount);
-                    request.NewCatalog.ProfileImg = request.NewAccount.ProfileImg;
+                    string profileImgUrl = GenerateImageLink(request.NewAccount.ProfileImg, request.NewAccount.Username, "profileImg");
+                    request.NewAccount.ProfileImg = profileImgUrl;
+                    request.NewCatalog.ProfileImg = profileImgUrl;
+                }
+                if(request.NewCatalog.Catalog.First<CatalogItem>().ItemImg != null)
+                {
+                    string imgUrl = request.NewCatalog.Catalog.First<CatalogItem>().ItemImg;
+                    request.NewCatalog.Catalog.First<CatalogItem>().ItemImg = GenerateImageLink(imgUrl, request.NewAccount.Username, "catalog");
                 }
                 //  Send create req to catalog service
                 await _catalogApiProxy.CatalogInsertMerchantAsync(request.NewCatalog);
@@ -62,11 +68,10 @@ namespace Accounts.Business.Registration
             }
             return registrationResponse;
         }
-        public MerchantAccount GenerateImageLink(MerchantAccount request)
+        public string GenerateImageLink(string encodedImage, string username, string type)
         {
-            string profileImg = _imageHandler.PostImage(request.ProfileImg, request.Username, "profileImg");
-            request.ProfileImg = profileImg;
-            return request;
+            string profileImg = _imageHandler.PostImage(encodedImage, username, type);
+            return profileImg;
         }
     }
 }

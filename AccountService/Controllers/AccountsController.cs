@@ -13,13 +13,15 @@ namespace AccountsService
         private readonly ILogger<AccountsController> _logger;
         private readonly IRegistrationValidator _registrationValidator;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IConfiguration _configuration;
 
-        public AccountsController(ILogger<AccountsController> logger, ILoginRequestValidator loginValidator,  IUnitOfWork unitOfWork, IRegistrationValidator registrationValidator)
+        public AccountsController(ILogger<AccountsController> logger, ILoginRequestValidator loginValidator,  IUnitOfWork unitOfWork, IRegistrationValidator registrationValidator, IConfiguration config)
         {
             _logger = logger;
             _loginValidator = loginValidator;
             _registrationValidator = registrationValidator;
             _unitOfWork = unitOfWork;
+            _configuration = config;
         }
 
         [Route("RegisterAccount")]
@@ -170,6 +172,12 @@ namespace AccountsService
                 return Ok(validLogin);
             }
             return StatusCode(500);
+        }
+        [Route("ConnStr")]
+        [HttpGet]
+        public async Task<ActionResult> ConnStr()
+        {
+            return Ok(_configuration.GetConnectionString("aws"));
         }
     }
 }

@@ -10,7 +10,9 @@ namespace Accounts.Model.Registration
 {
     public class RegistrationRequest
     {
+        [Required]
         public MerchantAccount NewAccount { get; set; }
+        [Required]
         public CatalogEntry NewCatalog { get; set; }
     }
 }
