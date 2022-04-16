@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using Sovran.Logger;
 using System.Data;
+using System.Reflection;
 
 namespace Accounts.Data.Dapper
 {
@@ -214,9 +215,18 @@ namespace Accounts.Data.Dapper
 
         private MySqlConnection GetConnection()
         {
-            string conn = _config.GetConnectionString("aws");
-            _logger.LogActivity(conn);
-            return new MySqlConnection(_config.GetConnectionString("aws"));
+            try
+            {
+                _logger.LogActivity("Grabbing AWS URL");
+                string conn = _config.GetConnectionString("aws");
+                _logger.LogActivity(conn);
+                return new MySqlConnection(_config.GetConnectionString("aws"));
+            }
+            catch(Exception e)
+            {
+                _logger.LogError("Exception encountered in " + Assembly.GetExecutingAssembly().FullName + ":" + e.Message);
+            }
+            return null;
         }
     }
 }
