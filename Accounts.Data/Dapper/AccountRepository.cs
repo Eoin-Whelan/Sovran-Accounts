@@ -63,12 +63,15 @@ namespace Accounts.Data.Dapper
                                                                @SupportPhone, 
                                                                @SupportEmail)";
                     var result = conn.Execute(insertQuery, newAccount);
+                    _logger.LogActivity(Assembly.GetExecutingAssembly().FullName + "Insertion result : " + result);
+
                     return result;
                 }
             }
             catch (Exception ex)
             {
-                throw;
+                _logger.LogError(Assembly.GetExecutingAssembly().FullName + "Skipping doesExistCheck : " + ex.Message);
+                return -1;
             }
         }
 
