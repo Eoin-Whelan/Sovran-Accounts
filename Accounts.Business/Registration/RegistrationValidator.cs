@@ -110,7 +110,7 @@ namespace Accounts.Business.Registration
             catch (Exception ex)
             {
                 //  Swallow exception and log exception and payload.
-                _logger.LogError("Exception caught: " + ex.Message);
+                _logger.LogError("Exception caught: " + ex.Source + ex.Message);
                 _logger.LogPayload(registrationResponse);
                 registrationResponse.errorMsg = "Internal server error occured. Please contact system administrator.";
                 registrationResponse.result = false;
