@@ -99,12 +99,13 @@ namespace Accounts.Business.Registration
                     }
                     else
                     {
-                        _logger.LogError("Registration complete for Username:" + request.NewAccount.Username);
+                        registrationResponse.result = true;
+                        _logger.LogActivity("Registration Successful: " + request.NewAccount.Username);
                     }
                 }
                 else
                 {
-                    _logger.LogError("Registration complete for Username:" + request.NewAccount.Username);
+                    _logger.LogError("Duplicate user entered:" + request.NewAccount.Username);
                 }
             }
             catch (Exception ex)
