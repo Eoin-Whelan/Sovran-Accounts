@@ -6,6 +6,7 @@ using Accounts.Data.Dapper;
 using Accounts.ServiceClients.Catalog.ApiProxy;
 using Accounts.ServiceClients.Cloudinary;
 using AccountService.ServiceClients.Payment.ApiProxy;
+using CloudinaryDotNet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -25,7 +26,7 @@ builder.Services.AddDbContext<AccountsContext>(
 
 // DEPENDENCY INJECTIONconfig
 
-//Web.config test
+string sql = builder.Configuration.GetConnectionString("aws");
 
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -39,6 +40,12 @@ builder.Services.AddScoped<IPaymentProxy>(x => new PaymentProxy("https://sovran-
 builder.Services.AddScoped<IRegistrationValidator, RegistrationValidator>();
 
 builder.Services.AddScoped<IImageHandler, ImageHandler>(x => new ImageHandler());
+builder.Services.AddScoped<Account>(x => new Account
+{
+    ApiKey = builder.Configuration.GetSection("cloudinaryApiKey").Value,
+    ApiSecret = builder.Configuration.GetSection("cloudinaryApiSecret").Value,
+    Cloud = builder.Configuration.GetSection("cloudinaryDomain").Value
+});
 
 
 builder.Services.AddSwaggerGen(c =>

@@ -2,6 +2,7 @@
 using Accounts.Business.Registration;
 using Accounts.Data.Contracts;
 using Accounts.Model.Registration;
+using CloudinaryDotNet;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,13 +14,15 @@ namespace AccountsService
         private readonly ILogger<AccountsController> _logger;
         private readonly IRegistrationValidator _registrationValidator;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly Account _account;
 
-        public AccountsController(ILogger<AccountsController> logger, ILoginRequestValidator loginValidator,  IUnitOfWork unitOfWork, IRegistrationValidator registrationValidator)
+        public AccountsController(ILogger<AccountsController> logger, ILoginRequestValidator loginValidator,  IUnitOfWork unitOfWork, IRegistrationValidator registrationValidator, Account account)
         {
             _logger = logger;
             _loginValidator = loginValidator;
             _registrationValidator = registrationValidator;
             _unitOfWork = unitOfWork;
+            _account = account;
         }
 
         [Route("RegisterAccount")]
@@ -170,6 +173,13 @@ namespace AccountsService
                 return Ok(validLogin);
             }
             return StatusCode(500);
+        }
+
+        [Route("Test")]
+        [HttpPost]
+        public async Task<ActionResult> Test()
+        {
+            return Ok(_account);
         }
     }
 }
