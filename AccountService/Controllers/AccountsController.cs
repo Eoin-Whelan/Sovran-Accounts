@@ -33,6 +33,11 @@ namespace AccountsService
                 _logger.LogActivity("Registration flow initiated");
                 _logger.LogPayload(newAccount);
                 var result = await _registrationValidator.Register(newAccount);
+                if (!result.result)
+                {
+                    _logger.LogPayload(result);
+                    _logger.LogError("Registration flow failed. Reason: " + result.errorMsg);
+                }
                 _logger.LogActivity("Registration flow Complete");
 
                 return Ok(result);

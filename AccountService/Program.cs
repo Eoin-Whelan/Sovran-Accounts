@@ -88,14 +88,6 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    //  Enable CORS for local testing.
-    builder.Services.AddCors(o => o.AddPolicy("Dev", builder =>
-    {
-        builder.WithOrigins("http://localhost.com")
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-
-    }));
 
     app.UseCors();
 }
