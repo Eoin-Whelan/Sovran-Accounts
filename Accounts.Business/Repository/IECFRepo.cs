@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Accounts.Business.Repository
 {
-    public interface OldIAccountRepo : IDisposable
+    public interface IECFRepo : IDisposable
     {
         bool CreateAccount(MerchantAccount newAccount);
 

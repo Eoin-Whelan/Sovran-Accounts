@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.3" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="6.0.0" />
+    <PackageReference Include="Sovran.Logger" Version="0.8.0" />
   </ItemGroup>
 
   <ItemGroup>

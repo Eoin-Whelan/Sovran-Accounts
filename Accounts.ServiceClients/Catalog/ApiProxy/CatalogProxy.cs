@@ -472,7 +472,7 @@ namespace Accounts.ServiceClients.Catalog.ApiProxy
         public System.Collections.Generic.ICollection<CatalogItem> Catalog { get; set; }
 
         [Newtonsoft.Json.JsonProperty("profileImg", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ProfileImg { get; set; }
+        public string? ProfileImg { get; set; }
 
     }
 
@@ -495,7 +495,7 @@ namespace Accounts.ServiceClients.Catalog.ApiProxy
         public string ItemDesc { get; set; }
 
         [Newtonsoft.Json.JsonProperty("itemImg", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ItemImg { get; set; }
+        public string? ItemImg { get; set; }
 
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Id { get; set; }

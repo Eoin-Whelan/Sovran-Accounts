@@ -5,17 +5,18 @@ using Accounts.Model.Registration;
 using CloudinaryDotNet;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Sovran.Logger;
 
 namespace AccountsService
 {
     public class AccountsController : Controller
     {
         public ILoginRequestValidator _loginValidator;
-        private readonly ILogger<AccountsController> _logger;
         private readonly IRegistrationValidator _registrationValidator;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly SovranLogger _logger;
 
-        public AccountsController(ILogger<AccountsController> logger, ILoginRequestValidator loginValidator,  IUnitOfWork unitOfWork, IRegistrationValidator registrationValidator)
+        public AccountsController(SovranLogger logger, ILoginRequestValidator loginValidator,  IUnitOfWork unitOfWork, IRegistrationValidator registrationValidator)
         {
             _logger = logger;
             _loginValidator = loginValidator;
@@ -29,13 +30,16 @@ namespace AccountsService
         {
             try
             {
+                _logger.LogActivity("Registration flow initiated");
+                _logger.LogPayload(newAccount);
                 var result = await _registrationValidator.Register(newAccount);
+                _logger.LogActivity("Registration flow Complete");
+
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError("Registration Failure");
-
+                _logger.LogError($"Registration Failure {ex.Message}");
                 JsonResult result = new JsonResult("Internal Error Has Occurred.");
                 return BadRequest(-1);
             }

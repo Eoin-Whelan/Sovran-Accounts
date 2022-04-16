@@ -8,34 +8,74 @@ using System.Threading.Tasks;
 
 namespace Accounts.ServiceClients.Cloudinary
 {
+    /// <summary>
+    /// ImageHandler is a service class for communication with Sovran's Cloudinary account.<br></br>
+    /// 
+    /// It generates links from the encoded image files to allow for dynamic profile and product images.<br></br><br></br>
+    /// This is strictly used in registration and update account flows.
+    /// </summary>
     public class ImageHandler : IImageHandler
     {
         private readonly Account _account;
-        public ImageHandler()
+        public ImageHandler(Account account)
         {
-
-            _account = new Account
-            {
-                Cloud = "sovran-merch",
-                ApiKey = "228678378674647",
-                ApiSecret = "khwW-o2cq6SmVssVY1K5B7t5U8s"
-            };
+            _account = account;
         }
 
-        public string PostImage(string image, string username, string location)
+        /// <summary>
+        /// PostProfileImg takes the encoded image and username to generate upload params<br></br> then passed
+        /// to Post method. Absolute URL of the uploaded image is generated an returned to assign to Merchant profile.
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public string PostProfileImg(string image, string username)
         {
-            CloudinaryDotNet.Cloudinary cloudinary = new CloudinaryDotNet.Cloudinary(_account);
-            cloudinary.Api.Secure = true;
-
             var uploadParams = new ImageUploadParams()
             {
-                PublicId = $"merchants/{username}/{location}",
+                PublicId = $"merchants/{username}/{"profile"}",
                 Transformation = new Transformation().Width(400).Height(400).Crop("limit"),
                 File = new FileDescription(image)
             };
-            var uploadResult = cloudinary.Upload(uploadParams);
+
+            return Post(uploadParams);
+        }
+
+        /// <summary>
+        /// PostProductImg takes the encoded image, username and the itemName itself in <br></br> order to generate
+        /// a dynamic product page image for storefront generation.
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="username"></param>
+        /// <param name="itemName"></param>
+        /// <returns></returns>
+        public string PostProductImg(string image, string username, string itemName)
+        {
+            var uploadParams = new ImageUploadParams()
+            {
+                PublicId = $"merchants/{username}/catalog/{itemName}",
+                Transformation = new Transformation().Width(400).Height(400).Crop("limit"),
+                File = new FileDescription(image)
+            };
+
+            return Post(uploadParams);
+        }
+
+        /// <summary>
+        /// Post acts as the common thread for both product and profile image uploading. Takes parameters and <br></br>
+        /// posts them to Cloudinary account.
+        /// </summary>
+        /// <param name="imgParams"></param>
+        /// <returns>Absolute URL of image desired.</returns>
+        private string Post(ImageUploadParams imgParams)
+        {
+            CloudinaryDotNet.Cloudinary client = new CloudinaryDotNet.Cloudinary(_account);
+            client.Api.Secure = true;
+
+            var uploadResult = client.Upload(imgParams);
             var result = uploadResult.Url;
             return result.AbsoluteUri;
         }
+
     }
 }

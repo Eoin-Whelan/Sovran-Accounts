@@ -18,6 +18,8 @@ namespace Accounts.Data.Contracts
         Task<int> DeleteAsync(int id);
         Task<int> AttemptLogin(string username, string password);
         Task<string> GetStripeAccount(string username);
+        public bool DoesExist(string username);
+
 
     }
 }

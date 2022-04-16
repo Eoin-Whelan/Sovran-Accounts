@@ -9,6 +9,8 @@ using AccountService.ServiceClients.Payment.ApiProxy;
 using CloudinaryDotNet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Sovran.Logger;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,28 +26,33 @@ builder.Services.AddDbContext<AccountsContext>(
                      builder.Configuration.GetConnectionString("sql")));
 
 
-// DEPENDENCY INJECTIONconfig
+// DEPENDENCY INJECTION
 
-string sql = builder.Configuration.GetConnectionString("aws");
+builder.Services.AddScoped<SovranLogger>(x => new SovranLogger (
+    "Accounts",
+    builder.Configuration.GetConnectionString("loggerMongo"),
+    builder.Configuration.GetConnectionString("loggerSql")
+    )
+);
 
-
-builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<ILoginRequestValidator, LoginRequestValidator>();
-builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-//builder.Services.AddScoped<Accounts.Business.Repository.IRepository<MerchantAccount, int>, OldAccountRepository>();
-
-
-builder.Services.AddScoped<ICatalogProxy>(x => new CatalogProxy("https://sovran-catalog.azurewebsites.net", new HttpClient()));
-builder.Services.AddScoped<IPaymentProxy>(x => new PaymentProxy("https://sovran-payment.azurewebsites.net", new HttpClient()));
-builder.Services.AddScoped<IRegistrationValidator, RegistrationValidator>();
-
-builder.Services.AddScoped<IImageHandler, ImageHandler>(x => new ImageHandler());
 builder.Services.AddScoped<Account>(x => new Account
 {
     ApiKey = builder.Configuration.GetSection("cloudinaryApiKey").Value,
     ApiSecret = builder.Configuration.GetSection("cloudinaryApiSecret").Value,
     Cloud = builder.Configuration.GetSection("cloudinaryDomain").Value
 });
+
+builder.Services.AddScoped<ICatalogProxy>(x => new CatalogProxy("https://sovran-catalog.azurewebsites.net", new HttpClient()));
+builder.Services.AddScoped<IPaymentProxy>(x => new PaymentProxy("https://sovran-payment.azurewebsites.net", new HttpClient()));
+builder.Services.AddScoped<IRegistrationValidator, RegistrationValidator>();
+
+
+
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ILoginRequestValidator, LoginRequestValidator>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IImageHandler, ImageHandler>();
+
 
 
 builder.Services.AddSwaggerGen(c =>
@@ -75,21 +82,21 @@ builder.Services.AddSwaggerGen(c =>
     //c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
-//  Enable CORS for local testing.
-builder.Services.AddCors(o => o.AddPolicy("Dev", builder =>
-{
-    builder.WithOrigins("http://localhost.com")
-           .AllowAnyMethod()
-           .AllowAnyHeader();
-
-}));
-
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    //  Enable CORS for local testing.
+    builder.Services.AddCors(o => o.AddPolicy("Dev", builder =>
+    {
+        builder.WithOrigins("http://localhost.com")
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+
+    }));
+
     app.UseCors();
 }
 

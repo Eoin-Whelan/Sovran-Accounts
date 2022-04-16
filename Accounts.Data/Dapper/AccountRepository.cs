@@ -209,15 +209,9 @@ namespace Accounts.Data.Dapper
             }
         }
 
-
-        public MySqlConnection GetConnection()
+        private MySqlConnection GetConnection()
         {
-            //return new MySqlConnection(_config.GetConnectionString("sql"));
-            return new MySqlConnection(@"Server=sovran-accounts.cihpzkqwv66o.eu-west-1.rds.amazonaws.com;
-                        Database=sovran_accounts;
-                        User=notary;
-                        Password=B4rth0l0m3w!;
-                        Convert Zero Datetime=True;");
+            return new MySqlConnection(_config.GetConnectionString("aws"));
         }
     }
 }
