@@ -28,7 +28,7 @@ builder.Services.AddDbContext<AccountsContext>(
 
 // DEPENDENCY INJECTION
 
-builder.Services.AddScoped<SovranLogger>(x => new SovranLogger (
+builder.Services.AddScoped<ISovranLogger, SovranLogger>(x => new SovranLogger (
     "Accounts",
     builder.Configuration.GetConnectionString("loggerMongo"),
     builder.Configuration.GetConnectionString("loggerSql")

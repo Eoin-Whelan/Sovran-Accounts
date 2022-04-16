@@ -18,7 +18,7 @@ namespace Accounts.Business.Registration
         private readonly ICatalogProxy _catalogApiProxy;
         private readonly IPaymentProxy _paymentApiProxy;
         private readonly IImageHandler _imageHandler;
-        private readonly SovranLogger _logger;
+        private readonly ISovranLogger _logger;
         /// <summary>
         /// Primary constructor. Utilizes dependency injection to avoid concrete instantiations in main controller.
         /// </summary>
@@ -27,7 +27,7 @@ namespace Accounts.Business.Registration
         /// <param name="paymentProxy"></param>
         /// <param name="imageHandler"></param>
         /// <param name="logger"></param>
-        public RegistrationValidator(IUnitOfWork unitOfWork, ICatalogProxy catalogProxy, IPaymentProxy paymentProxy, IImageHandler imageHandler, SovranLogger logger)
+        public RegistrationValidator(IUnitOfWork unitOfWork, ICatalogProxy catalogProxy, IPaymentProxy paymentProxy, IImageHandler imageHandler, ISovranLogger logger)
         {
             _unitOfWork = unitOfWork;
             _catalogApiProxy = catalogProxy;

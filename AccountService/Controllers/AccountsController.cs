@@ -14,9 +14,9 @@ namespace AccountsService
         public ILoginRequestValidator _loginValidator;
         private readonly IRegistrationValidator _registrationValidator;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly SovranLogger _logger;
+        private readonly ISovranLogger _logger;
 
-        public AccountsController(SovranLogger logger, ILoginRequestValidator loginValidator,  IUnitOfWork unitOfWork, IRegistrationValidator registrationValidator)
+        public AccountsController(ISovranLogger logger, ILoginRequestValidator loginValidator,  IUnitOfWork unitOfWork, IRegistrationValidator registrationValidator)
         {
             _logger = logger;
             _loginValidator = loginValidator;
