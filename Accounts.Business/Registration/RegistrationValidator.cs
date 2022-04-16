@@ -102,6 +102,10 @@ namespace Accounts.Business.Registration
                         _logger.LogError("Registration complete for Username:" + request.NewAccount.Username);
                     }
                 }
+                else
+                {
+                    _logger.LogError("Registration complete for Username:" + request.NewAccount.Username);
+                }
             }
             catch (Exception ex)
             {

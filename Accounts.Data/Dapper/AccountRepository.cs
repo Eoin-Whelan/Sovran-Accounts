@@ -3,6 +3,7 @@ using Accounts.Model;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
+using Sovran.Logger;
 using System.Data;
 
 namespace Accounts.Data.Dapper
@@ -10,10 +11,12 @@ namespace Accounts.Data.Dapper
     public class AccountRepository : IAccountRepository
     {
         private readonly IConfiguration _config;
+        private readonly ISovranLogger _logger;
 
-        public AccountRepository(IConfiguration config)
+        public AccountRepository(IConfiguration config, ISovranLogger logger)
         {
             _config = config;
+            _logger = logger;
         }
 
         public int AddMerchant(MerchantAccount newAccount)
@@ -211,6 +214,8 @@ namespace Accounts.Data.Dapper
 
         private MySqlConnection GetConnection()
         {
+            string conn = _config.GetConnectionString("aws");
+            _logger.LogActivity(conn);
             return new MySqlConnection(_config.GetConnectionString("aws"));
         }
     }
