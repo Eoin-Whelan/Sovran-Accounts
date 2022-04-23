@@ -19,16 +19,8 @@
     <HtmlHelpName>Documentation</HtmlHelpName>
     <Language>en-US</Language>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\..\Repos\AccountService\AccountService\bin\Debug\net6.0\Accounts.Business.xml" />
-<DocumentationSource sourceFile="..\..\Repos\AccountService\AccountService\bin\Debug\net6.0\Accounts.Business.dll" />
-<DocumentationSource sourceFile="..\..\Repos\AccountService\AccountService\bin\Debug\net6.0\Accounts.Data.dll" />
-<DocumentationSource sourceFile="..\..\Repos\AccountService\AccountService\bin\Debug\net6.0\Accounts.Data.xml" />
-<DocumentationSource sourceFile="..\..\Repos\AccountService\AccountService\bin\Debug\net6.0\Accounts.Model.dll" />
-<DocumentationSource sourceFile="..\..\Repos\AccountService\AccountService\bin\Debug\net6.0\Accounts.Model.xml" />
-<DocumentationSource sourceFile="..\..\Repos\AccountService\AccountService\bin\Debug\net6.0\Accounts.ServiceClients.dll" />
-<DocumentationSource sourceFile="..\..\Repos\AccountService\AccountService\bin\Debug\net6.0\Accounts.ServiceClients.xml" />
-<DocumentationSource sourceFile="..\..\Repos\AccountService\AccountService\bin\Debug\net6.0\AccountService.dll" />
-<DocumentationSource sourceFile="..\..\Repos\AccountService\AccountService\bin\Debug\net6.0\AccountService.xml" /></DocumentationSources>
+      <DocumentationSource sourceFile="..\AccountService\AccountService.sln" />
+    </DocumentationSources>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
     <SyntaxFilters>C#</SyntaxFilters>
     <PresentationStyle>VS2010</PresentationStyle>
