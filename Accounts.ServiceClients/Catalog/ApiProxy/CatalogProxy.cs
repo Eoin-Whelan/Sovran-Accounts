@@ -44,6 +44,9 @@ namespace Accounts.ServiceClients.Catalog.ApiProxy
 
     }
 
+    /// <summary>
+    /// CatalogProxy is a client class for communication with the Catalog service.
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class CatalogProxy : ICatalogProxy
     {

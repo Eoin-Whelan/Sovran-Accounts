@@ -36,11 +36,9 @@ namespace Accounts.Business.Registration
             _logger = logger;
         }
 
-        /// <summary>
-        /// Primary registration flow method. ApiProxy's are communicated with, culminating in a merchant catalog and Stripe account.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Primary registration flow method. ApiProxy's are communicated with, culminating in a merchant catalog and Stripe account.</summary>
+        /// <param name="request">Submitted user registration request.</param>
+        /// <returns>Registration response indicating success and potential onboarding URL.</returns>
         public async Task<RegistrationResponse> Register(RegistrationRequest request)
         {
             // Instantiate a container response for front-end.
@@ -120,11 +118,11 @@ namespace Accounts.Business.Registration
         }
 
         /// <summary>
-        /// Genera
+        /// Posts encoded image to Cloudinary proxy class.
         /// </summary>
         /// <param name="encodedImage"></param>
         /// <param name="username"></param>
-        /// <returns></returns>
+        /// <returns>Cloudinary Image URL</returns>
         public string GenerateProfileImage(string encodedImage, string username)
         {
             string profileImg = _imageHandler.PostProfileImg(encodedImage, username);

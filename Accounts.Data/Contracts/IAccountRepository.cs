@@ -7,19 +7,17 @@ using System.Threading.Tasks;
 
 namespace Accounts.Data.Contracts
 {
+    /// <summary>
+    /// AccountRepository contract/interface. Used in dependency injection method.
+    /// </summary>
     public interface IAccountRepository
     {
         Task<MerchantAccount> GetByIdAsync(int id);
-        Task<int> GetByUsername(string username);
-
-        Task<IReadOnlyList<MerchantAccount>> GetAllAsync();
+        Task<MerchantAccount> GetByUsername(string username);
         int AddMerchant(MerchantAccount entity);
         Task<int> UpdateAsync(MerchantAccount entity);
-        Task<int> DeleteAsync(int id);
         Task<int> AttemptLogin(string username, string password);
         Task<string> GetStripeAccount(string username);
         public bool DoesExist(string username);
-
-
     }
 }

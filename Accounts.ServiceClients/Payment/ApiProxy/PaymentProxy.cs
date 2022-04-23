@@ -35,6 +35,10 @@ namespace AccountService.ServiceClients.Payment.ApiProxy
 
     }
 
+
+    /// <summary>
+    /// PaymentProxy is a client class for communication with the Payment service.
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial class PaymentProxy : IPaymentProxy
     {

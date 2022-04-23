@@ -1,30 +1,34 @@
-﻿using Accounts.Business.Login;
-using Accounts.Business.Registration;
+﻿using Accounts.Business.Registration;
 using Accounts.Data.Contracts;
+using Accounts.Model;
 using Accounts.Model.Registration;
-using CloudinaryDotNet;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Sovran.Logger;
 
 namespace AccountsService
 {
+    /// <summary>
+    /// Main controller for account service API.
+    /// </summary>
     public class AccountsController : Controller
     {
-        public ILoginRequestValidator _loginValidator;
         private readonly IRegistrationValidator _registrationValidator;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISovranLogger _logger;
 
-        public AccountsController(ISovranLogger logger, ILoginRequestValidator loginValidator,  IUnitOfWork unitOfWork, IRegistrationValidator registrationValidator)
+        public AccountsController(ISovranLogger logger, IUnitOfWork unitOfWork, IRegistrationValidator registrationValidator)
         {
             _logger = logger;
-            _loginValidator = loginValidator;
             _registrationValidator = registrationValidator;
             _unitOfWork = unitOfWork;
         }
 
-        [Route("RegisterAccount")]
+        /// <summary>
+        /// Primary registration flow. Required encoded image string for profileImg and initial Catalog item image. Otherwise, leave null.
+        /// </summary>
+        /// <param name="newAccount"></param>
+        /// <returns></returns>
+        [Route("/Catalog/RegisterAccount")]
         [HttpPost]
         public async Task<IActionResult> RegisterAccountAsync([FromBody]RegistrationRequest newAccount)
         {
@@ -50,11 +54,12 @@ namespace AccountsService
             }
         }
         /// <summary>
-        /// Test Endpoint for front-end handling. Returns response with google.ie link to mock Stripe onboarding transition.
+        /// Test Endpoint for front-end handling. Returns response with google.ie link
+        /// to mock Stripe onboarding transition.
         /// </summary>
         /// <param name="newAccount"></param>
         /// <returns></returns>
-        [Route("DummyRegister")]
+        [Route("/Catalog/DummyRegister")]
         [HttpPost]
         public async Task<IActionResult> DummyRegister([FromBody] RegistrationRequest newAccount)
         {
@@ -66,92 +71,77 @@ namespace AccountsService
             return Ok(reply);
         }
 
-        // GET: AccountsController
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        // GET: AccountsController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: AccountsController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: AccountsController/Create
+        /// <summary>
+        /// Updates a given merchant based on their Id.
+        /// to mock Stripe onboarding transition.
+        /// </summary>
+        /// <param name="newAccount"></param>
+        /// <returns></returns>
+        [Route("/Catalog/UpdateAccount")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> UpdateAccount([FromBody] MerchantAccount newAccount)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var result = await _unitOfWork.Accounts.UpdateAsync(newAccount);
+                if(result == 1)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest();
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return BadRequest();
             }
         }
 
-        // GET: AccountsController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: AccountsController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: AccountsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: AccountsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-        [Route("PullById")]
+        /// <summary>
+        /// Pulls account by Id. Currently unused.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Route("/Catalog/PullById")]
         [HttpPost]
         public ActionResult RetrieveById(int id)
         {
             var DapperResult = _unitOfWork.Accounts.GetByIdAsync(id).Result;
-
-            //var ECFResult = _accountRepo.GetById(id);
-
             return Ok(DapperResult);
         }
 
-        [Route("RetrieveStripeAccount")]
+        /// <summary>
+        /// Pulls account by username. Used in account update flow.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        [Route("/Catalog/PullByUsername")]
+        [HttpPost]
+        public ActionResult PullByUsername(string username)
+        {
+            try
+            {
+                var result = _unitOfWork.Accounts.GetByUsername(username).Result;
+                if(result == null)
+                {
+                    return BadRequest();
+                }
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        /// <summary>
+        /// Retrieves stripe account based on passed username. May be used in payment flow.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <returns></returns>
+        [Route("/Catalog/RetrieveStripeAccount")]
         [HttpPost]
         public async Task<ActionResult> RetrieveStripeAccount(string username)
         {
@@ -169,7 +159,13 @@ namespace AccountsService
 
         }
 
-        [Route("NewLogin")]
+        /// <summary>
+        /// Logins the specified username.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="password">The password.</param>
+        /// <returns></returns>
+        [Route("/Catalog/Login")]
         [HttpPost]
         public async Task<ActionResult> Login(string username, string password)
         {

@@ -1,6 +1,5 @@
-using Accounts.Business;
-using Accounts.Business.Login;
 using Accounts.Business.Registration;
+using Accounts.Business.Repository;
 using Accounts.Data.Contracts;
 using Accounts.Data.Dapper;
 using Accounts.ServiceClients.Catalog.ApiProxy;
@@ -27,33 +26,28 @@ builder.Services.AddDbContext<AccountsContext>(
 
 
 // DEPENDENCY INJECTION
-
 builder.Services.AddScoped<ISovranLogger, SovranLogger>(x => new SovranLogger (
     "Accounts",
     builder.Configuration.GetConnectionString("loggerMongo"),
     builder.Configuration.GetConnectionString("loggerSql")
     )
 );
-
 builder.Services.AddScoped<Account>(x => new Account
 {
     ApiKey = builder.Configuration.GetSection("cloudinaryApiKey").Value,
     ApiSecret = builder.Configuration.GetSection("cloudinaryApiSecret").Value,
     Cloud = builder.Configuration.GetSection("cloudinaryDomain").Value
 });
-
-builder.Services.AddScoped<ICatalogProxy>(x => new CatalogProxy("https://sovran-catalog.azurewebsites.net", new HttpClient()));
-builder.Services.AddScoped<IPaymentProxy>(x => new PaymentProxy("https://sovran-payment.azurewebsites.net", new HttpClient()));
+builder.Services.AddScoped<ICatalogProxy>(x => new CatalogProxy(
+    builder.Configuration.GetConnectionString("catalog"),
+    new HttpClient()));
+builder.Services.AddScoped<IPaymentProxy>(x => new PaymentProxy(
+    builder.Configuration.GetConnectionString("payment"),
+    new HttpClient()));
 builder.Services.AddScoped<IRegistrationValidator, RegistrationValidator>();
-
-
-
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<ILoginRequestValidator, LoginRequestValidator>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IImageHandler, ImageHandler>();
-
-
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -78,8 +72,8 @@ builder.Services.AddSwaggerGen(c =>
 
     });
     // Set the comments path for the Swagger JSON and UI.
-    //var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    //c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
 

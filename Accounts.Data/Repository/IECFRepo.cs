@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Accounts.Business.Repository
 {
+    /// <summary>
+    /// Unused ECF contract interface.
+    /// </summary>
     public interface IECFRepo : IDisposable
     {
         bool CreateAccount(MerchantAccount newAccount);

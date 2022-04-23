@@ -8,14 +8,17 @@ using System.Threading.Tasks;
 
 namespace Accounts.Business.Repository
 {
-    public class OldAccountRepository : IRepository<MerchantAccount, int>
+    /// <summary>
+    /// ECF Repo is an unimplemented, incomplete class used when exploring database
+    /// object relational-mapping capabilities. Based on Entity Core Framework.
+    /// </summary>
+    public class ECFRepo : IRepository<MerchantAccount, int>
     {
         private readonly AccountsContext _context;
 
-        public OldAccountRepository(AccountsContext context)
+        public ECFRepo(AccountsContext context)
         {
             _context = context;
-
         }
 
         public MerchantAccount GetById(int id)
