@@ -40,7 +40,7 @@ namespace Accounts.Business.Update
                 _logger.LogActivity("Calling CatalogProxy. Update Merchant call for for: " +update.Username);
                 Dictionary<string, string> newDetails = new Dictionary<string, string>();
                 newDetails.Add("email", update.SupportEmail);
-                _catalogProxy.CatalogUpdateMerchantAsync(update.Username, newDetails);
+                _catalogProxy.UpdateMerchantAsync(update.Username, newDetails);
                 return Task.CompletedTask;
             }
             catch (Exception ex)

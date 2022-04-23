@@ -74,7 +74,7 @@ namespace Accounts.Business.Registration
 
 
                     //  Send async req to generate a new merchant catalog
-                    await _catalogApiProxy.CatalogInsertMerchantAsync(request.NewCatalog);
+                    await _catalogApiProxy.InsertMerchantAsync(request.NewCatalog);
 
                     _logger.LogActivity("Catalog proxy flow complete. Beginning payment proxy flow.");
 
