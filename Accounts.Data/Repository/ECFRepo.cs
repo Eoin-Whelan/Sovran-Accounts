@@ -1,12 +1,11 @@
-﻿
-using Accounts.Model;
+﻿using Accounts.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Accounts.Business.Repository
+namespace Accounts.Data.Repository
 {
     /// <summary>
     /// ECF Repo is an unimplemented, incomplete class used when exploring database
@@ -71,7 +70,7 @@ namespace Accounts.Business.Repository
                         return true;
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                 }
                 return false;

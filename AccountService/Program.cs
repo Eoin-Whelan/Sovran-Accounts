@@ -1,7 +1,7 @@
 using Accounts.Business.Registration;
-using Accounts.Business.Repository;
 using Accounts.Data.Contracts;
 using Accounts.Data.Dapper;
+using Accounts.Data.Repository;
 using Accounts.ServiceClients.Catalog.ApiProxy;
 using Accounts.ServiceClients.Cloudinary;
 using AccountService.ServiceClients.Payment.ApiProxy;

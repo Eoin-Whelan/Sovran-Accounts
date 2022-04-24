@@ -1,5 +1,4 @@
 ﻿using Accounts.Data.Contracts;
-using Accounts.Model;
 using Accounts.Model.Registration;
 using Accounts.ServiceClients.Catalog.ApiProxy;
 using Accounts.ServiceClients.Cloudinary;
@@ -47,7 +46,7 @@ namespace Accounts.Business.Registration
             var stripeRequest = new PaymentRegistrationRequest
             {
                 EmailAddress = request.NewAccount.MerchantEmail
-                };
+            };
 
             try
             {

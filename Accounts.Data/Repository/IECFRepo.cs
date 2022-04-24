@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Accounts.Business.Repository
+namespace Accounts.Data.Repository
 {
     /// <summary>
     /// Unused ECF contract interface.

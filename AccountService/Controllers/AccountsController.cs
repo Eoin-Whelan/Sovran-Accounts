@@ -5,7 +5,7 @@ using Accounts.Model.Registration;
 using Microsoft.AspNetCore.Mvc;
 using Sovran.Logger;
 
-namespace AccountsService
+namespace AccountService.Controllers
 {
     /// <summary>
     /// Main controller for account service API.
@@ -30,7 +30,7 @@ namespace AccountsService
         /// <returns></returns>
         [Route("/Catalog/RegisterAccount")]
         [HttpPost]
-        public async Task<IActionResult> RegisterAccountAsync([FromBody]RegistrationRequest newAccount)
+        public async Task<IActionResult> RegisterAccountAsync([FromBody] RegistrationRequest newAccount)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace AccountsService
             try
             {
                 var result = await _unitOfWork.Accounts.UpdateAsync(newAccount);
-                if(result == 1)
+                if (result == 1)
                 {
                     return Ok();
                 }
@@ -124,13 +124,13 @@ namespace AccountsService
             try
             {
                 var result = _unitOfWork.Accounts.GetByUsername(username).Result;
-                if(result == null)
+                if (result == null)
                 {
                     return BadRequest();
                 }
                 return Ok(result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest();
             }
@@ -171,7 +171,7 @@ namespace AccountsService
         {
             var validLogin = await _unitOfWork.Accounts.AttemptLogin(username, password);
 
-            if(validLogin != -1)
+            if (validLogin != -1)
             {
                 return Ok(validLogin);
             }
