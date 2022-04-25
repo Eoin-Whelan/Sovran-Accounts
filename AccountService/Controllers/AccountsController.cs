@@ -173,7 +173,7 @@ namespace AccountService.Controllers
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
         /// <returns></returns>
-        [Route("/Account/Login")]
+        [Route("/Login")]
         [HttpPost]
         public ActionResult Login([FromBody] LoginRequest loginRequest)
         {
