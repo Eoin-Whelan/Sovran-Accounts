@@ -31,7 +31,7 @@ namespace AccountService.Controllers
         /// </summary>
         /// <param name="newAccount"></param>
         /// <returns></returns>
-        [Route("/Catalog/RegisterAccount")]
+        [Route("/Account/RegisterAccount")]
         [HttpPost]
         public async Task<IActionResult> RegisterAccountAsync([FromBody] RegistrationRequest newAccount)
         {
@@ -62,7 +62,7 @@ namespace AccountService.Controllers
         /// </summary>
         /// <param name="newAccount"></param>
         /// <returns></returns>
-        [Route("/Catalog/DummyRegister")]
+        [Route("/Account/DummyRegister")]
         [HttpPost]
         public async Task<IActionResult> DummyRegister([FromBody] RegistrationRequest newAccount)
         {
@@ -80,7 +80,7 @@ namespace AccountService.Controllers
         /// </summary>
         /// <param name="newAccount"></param>
         /// <returns></returns>
-        [Route("/Catalog/UpdateAccount")]
+        [Route("/Account/UpdateAccount")]
         [HttpPost]
         public async Task<IActionResult> UpdateAccount([FromBody] MerchantAccount newAccount)
         {
@@ -111,7 +111,7 @@ namespace AccountService.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [Route("/Catalog/PullById")]
+        [Route("/Account/PullById")]
         [HttpPost]
         public ActionResult RetrieveById(int id)
         {
@@ -124,7 +124,7 @@ namespace AccountService.Controllers
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        [Route("/Catalog/PullByUsername")]
+        [Route("/Account/PullByUsername")]
         [HttpPost]
         public ActionResult PullByUsername(string username)
         {
@@ -148,7 +148,7 @@ namespace AccountService.Controllers
         /// </summary>
         /// <param name="username">The username.</param>
         /// <returns></returns>
-        [Route("/Catalog/RetrieveStripeAccount")]
+        [Route("/Account/RetrieveStripeAccount")]
         [HttpPost]
         public async Task<ActionResult> RetrieveStripeAccount(string username)
         {
@@ -172,7 +172,7 @@ namespace AccountService.Controllers
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
         /// <returns></returns>
-        [Route("/Catalog/Login")]
+        [Route("/Account/Login")]
         [HttpPost]
         public async Task<ActionResult> Login(string username, string password)
         {
