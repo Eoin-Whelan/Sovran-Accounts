@@ -156,12 +156,12 @@ namespace Accounts.Data.Dapper
         /// <returns></returns>
         public async Task<int> AttemptLogin(string username, string password)
         {
-            _logger.LogActivity("New login attempt" + username);
-            var procedure = "login";
-            var values = new { userlogin = username, userpw = password};
-            var conn = GetConnection();
+            _logger.LogActivity("New login attemptL " + username);
             try
             {
+                var procedure = "login";
+                var values = new { userlogin = username, userpw = password };
+                var conn = GetConnection();
                 using (conn)
                 {
                     conn.Open();
