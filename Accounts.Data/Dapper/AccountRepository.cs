@@ -240,10 +240,8 @@ namespace Accounts.Data.Dapper
             }
             catch(Exception ex)
             {
-                _logger.LogError(Assembly.GetExecutingAssembly().FullName + "Skipping doesExistCheck : "+ ex.Message);
-                return true;
+                throw new Exception(ex.Message);
             }
-
         }
 
         /// <summary>
