@@ -208,9 +208,8 @@ namespace Accounts.Data.Dapper
                                                                 SupportPhone = @SupportPhone, 
                                                                 SupportEmail = @SupportEmail
                                                                 WHERE MerchantId=@MerchantId";
-                    var result = conn.ExecuteAsync(updateQuery, updatedAccount).Result;
-                    _logger.LogActivity(Assembly.GetExecutingAssembly().FullName + "Update result : " + result);
-
+                    var result = await conn.ExecuteAsync(updateQuery, updatedAccount);
+                    _logger.LogActivity(Assembly.GetExecutingAssembly().FullName + " Update result : " + result);
                     return result;
                 }
             }

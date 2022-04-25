@@ -1,4 +1,5 @@
 using Accounts.Business.Registration;
+using Accounts.Business.Update;
 using Accounts.Data.Contracts;
 using Accounts.Data.Dapper;
 using Accounts.Data.Repository;
@@ -45,6 +46,7 @@ builder.Services.AddScoped<IPaymentProxy>(x => new PaymentProxy(
     builder.Configuration.GetConnectionString("payment"),
     new HttpClient()));
 builder.Services.AddScoped<IRegistrationValidator, RegistrationValidator>();
+builder.Services.AddScoped<IUpdateValidator, UpdateValidator>();
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IImageHandler, ImageHandler>();

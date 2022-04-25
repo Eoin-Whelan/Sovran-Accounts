@@ -1,4 +1,5 @@
 ﻿using Accounts.Business.Registration;
+using Accounts.Business.Update;
 using Accounts.Data.Contracts;
 using Accounts.Model;
 using Accounts.Model.Registration;
@@ -13,13 +14,15 @@ namespace AccountService.Controllers
     public class AccountsController : Controller
     {
         private readonly IRegistrationValidator _registrationValidator;
+        private readonly IUpdateValidator _updateValidator;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISovranLogger _logger;
 
-        public AccountsController(ISovranLogger logger, IUnitOfWork unitOfWork, IRegistrationValidator registrationValidator)
+        public AccountsController(ISovranLogger logger, IUnitOfWork unitOfWork, IUpdateValidator updateValidator, IRegistrationValidator registrationValidator)
         {
             _logger = logger;
             _registrationValidator = registrationValidator;
+            _updateValidator = updateValidator;
             _unitOfWork = unitOfWork;
         }
 
@@ -83,8 +86,11 @@ namespace AccountService.Controllers
         {
             try
             {
-                var result = await _unitOfWork.Accounts.UpdateAsync(newAccount);
-                if (result == 1)
+                _logger.LogActivity("Update flow initiated for " + newAccount.Username);
+                _logger.LogPayload(newAccount);
+
+                var result = _updateValidator.UpdateAccount(newAccount);
+                if (result.IsCompleted)
                 {
                     return Ok();
                 }
@@ -95,6 +101,7 @@ namespace AccountService.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError("Error encountered in update flow Ex: " + ex.Message);
                 return BadRequest();
             }
         }
