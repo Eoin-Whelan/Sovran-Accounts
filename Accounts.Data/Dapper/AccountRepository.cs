@@ -225,7 +225,7 @@ namespace Accounts.Data.Dapper
         /// </summary>
         /// <param name="username">The username.</param>
         /// <returns>True/False value</returns>
-        public bool DoesExist(string username)
+        public async Task<bool> DoesExist(string username)
         {
             try
             {
