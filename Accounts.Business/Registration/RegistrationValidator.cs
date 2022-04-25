@@ -50,60 +50,50 @@ namespace Accounts.Business.Registration
 
             try
             {
-                var isUnique = await _unitOfWork.Accounts.DoesExist(request.NewAccount.Username);
-                //  If username is unique
-                if (isUnique == 1)
+                _logger.LogActivity("Cloudinary flow began.");
+                // Generate image links for the profile and product images
+                if (request.NewAccount.ProfileImg != null)
                 {
-
-                    _logger.LogActivity("Cloudinary flow began.");
-                    // Generate image links for the profile and product images
-                    if (request.NewAccount.ProfileImg != null)
-                    {
-                        string profileImgUrl = GenerateProfileImage(request.NewAccount.ProfileImg, request.NewAccount.Username);
-                        request.NewAccount.ProfileImg = profileImgUrl;
-                        request.NewCatalog.ProfileImg = profileImgUrl;
-                    }
-                    if (request.NewCatalog.Catalog.First<CatalogItem>().ItemImg != null)
-                    {
-                        string imgUrl = request.NewCatalog.Catalog.First<CatalogItem>().ItemImg;
-                        request.NewCatalog.Catalog.First<CatalogItem>().ItemImg =
-                            _imageHandler.PostProductImg(imgUrl, request.NewAccount.Username, request.NewCatalog.Catalog.First().ItemName);
-                    }
-                    _logger.LogActivity("Cloudinary flow complete. Beginning catalog proxy flow.");
+                    string profileImgUrl = GenerateProfileImage(request.NewAccount.ProfileImg, request.NewAccount.Username);
+                    request.NewAccount.ProfileImg = profileImgUrl;
+                    request.NewCatalog.ProfileImg = profileImgUrl;
+                }
+                if (request.NewCatalog.Catalog.First<CatalogItem>().ItemImg != null)
+                {
+                    string imgUrl = request.NewCatalog.Catalog.First<CatalogItem>().ItemImg;
+                    request.NewCatalog.Catalog.First<CatalogItem>().ItemImg =
+                        _imageHandler.PostProductImg(imgUrl, request.NewAccount.Username, request.NewCatalog.Catalog.First().ItemName);
+                }
+                _logger.LogActivity("Cloudinary flow complete. Beginning catalog proxy flow.");
 
 
 
-                    //  Send async req to generate a new merchant catalog
-                    await _catalogApiProxy.InsertMerchantAsync(request.NewCatalog);
+                //  Send async req to generate a new merchant catalog
+                await _catalogApiProxy.InsertMerchantAsync(request.NewCatalog);
 
-                    _logger.LogActivity("Catalog proxy flow complete. Beginning payment proxy flow.");
+                _logger.LogActivity("Catalog proxy flow complete. Beginning payment proxy flow.");
 
 
 
-                    // Send request to payment service for Stripe onboarding
-                    var paymentResponse = await _paymentApiProxy.RegisterAccountAsync(stripeRequest);
-                    _logger.LogActivity("Catalog proxy flow complete. Beginning payment proxy flow.");
-                    _logger.LogPayload(paymentResponse);
+                // Send request to payment service for Stripe onboarding
+                var paymentResponse = await _paymentApiProxy.RegisterAccountAsync(stripeRequest);
+                _logger.LogActivity("Catalog proxy flow complete. Beginning payment proxy flow.");
+                _logger.LogPayload(paymentResponse);
 
-                    registrationResponse.stripeOnBoardingUrl = paymentResponse.OnboardingUrl;
-                    request.NewAccount.StripeId = paymentResponse.StripeAccountNo;
-                    _logger.LogActivity("Payment proxy flow complete. Beginning SQL insertion.");
+                registrationResponse.stripeOnBoardingUrl = paymentResponse.OnboardingUrl;
+                request.NewAccount.StripeId = paymentResponse.StripeAccountNo;
+                _logger.LogActivity("Payment proxy flow complete. Beginning SQL insertion.");
 
-                    var result = _unitOfWork.Accounts.AddMerchant(request.NewAccount);
-                    if (result != 1)
-                    {
-                        _logger.LogError("Registration failed. Username:" + request.NewAccount.Username);
-                        registrationResponse.result = false;
-                    }
-                    else
-                    {
-                        registrationResponse.result = true;
-                        _logger.LogActivity("Registration Successful: " + request.NewAccount.Username);
-                    }
+                var result = _unitOfWork.Accounts.AddMerchant(request.NewAccount);
+                if (result != 1)
+                {
+                    _logger.LogError("Registration failed. Username:" + request.NewAccount.Username);
+                    registrationResponse.result = false;
                 }
                 else
                 {
-                    _logger.LogError("Duplicate user entered:" + request.NewAccount.Username);
+                    registrationResponse.result = true;
+                    _logger.LogActivity("Registration Successful: " + request.NewAccount.Username);
                 }
             }
             catch (Exception ex)
