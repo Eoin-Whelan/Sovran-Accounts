@@ -50,7 +50,7 @@ namespace Accounts.Business.Registration
 
             try
             {
-                var doesExist = _unitOfWork.Accounts.DoesExist(request.NewAccount.Username);
+                var doesExist = await _unitOfWork.Accounts.DoesExist(request.NewAccount.Username);
                 //  If username is unique
                 if (!doesExist)
                 {

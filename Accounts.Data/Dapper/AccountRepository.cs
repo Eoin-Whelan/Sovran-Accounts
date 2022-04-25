@@ -225,7 +225,7 @@ namespace Accounts.Data.Dapper
         /// </summary>
         /// <param name="username">The username.</param>
         /// <returns>True/False value</returns>
-        public bool DoesExist(string username)
+        public async Task<bool> DoesExist(string username)
         {
             try
             {
@@ -234,8 +234,8 @@ namespace Accounts.Data.Dapper
                 {
                     var parameters = new { UserName = username };
                     var sql = "SELECT Username FROM Merchants where Username = @UserName";
-                    var exists = conn.ExecuteScalar<bool>(sql, parameters);
-                    return exists;
+                    var exists = await conn.QueryAsync(sql, parameters);
+                    return exists.Any();
                 }
             }
             catch(Exception ex)
