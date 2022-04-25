@@ -80,7 +80,7 @@ namespace Accounts.Data.Dapper
             }
             catch (Exception ex)
             {
-                _logger.LogError(Assembly.GetExecutingAssembly().FullName + "Skipping Insertion : " + ex.Message);
+                _logger.LogError(Assembly.GetExecutingAssembly().FullName + "Skipping Insertion : " + ex.Message + ex.InnerException);
                 return -1;
             }
         }
