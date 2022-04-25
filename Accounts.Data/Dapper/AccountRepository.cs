@@ -38,7 +38,7 @@ namespace Accounts.Data.Dapper
                 using (conn)
                 {
                     conn.Open();
-                    string insertQuery = @"INSERT INTO Merchants(MerchantId,
+                    string insertQuery = @"INSERT INTO Merchants(
                                                                 Username, 
                                                                 StripeId, 
                                                                 CatalogId, 
@@ -55,7 +55,7 @@ namespace Accounts.Data.Dapper
                                                                 Postcode, 
                                                                 SupportPhone, 
                                                                 SupportEmail) 
-                                                       VALUES (@MerchantId, 
+                                                       VALUES ( 
                                                                @Username, 
                                                                @StripeId, 
                                                                @CatalogId, 
@@ -80,7 +80,7 @@ namespace Accounts.Data.Dapper
             }
             catch (Exception ex)
             {
-                _logger.LogError(Assembly.GetExecutingAssembly().FullName + "Skipping doesExistCheck : " + ex.Message);
+                _logger.LogError(Assembly.GetExecutingAssembly().FullName + "Skipping Insertion : " + ex.Message);
                 return -1;
             }
         }
@@ -225,7 +225,7 @@ namespace Accounts.Data.Dapper
         /// </summary>
         /// <param name="username">The username.</param>
         /// <returns>True/False value</returns>
-        public async Task<int> DoesExist(string username)
+        public bool DoesExist(string username)
         {
             try
             {
@@ -234,18 +234,16 @@ namespace Accounts.Data.Dapper
                 {
                     var parameters = new { UserName = username };
                     var sql = "SELECT Username FROM Merchants where Username = @UserName";
-                    var exists = await conn.QueryAsync(sql, parameters);
-                    if (exists.Any())
-                    {
-                        return 0;
-                    }
-                    return 1;
+                    var result = conn.Query(sql, parameters).Any();
+                    return result;
                 }
             }
             catch(Exception ex)
             {
-                throw new Exception(ex.Message);
+                _logger.LogError(Assembly.GetExecutingAssembly().FullName + "Skipping doesExistCheck : "+ ex.Message);
+                return true;
             }
+
         }
 
         /// <summary>
