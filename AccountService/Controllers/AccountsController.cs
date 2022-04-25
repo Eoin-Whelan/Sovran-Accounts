@@ -175,9 +175,9 @@ namespace AccountService.Controllers
         /// <returns></returns>
         [Route("/Account/Login")]
         [HttpPost]
-        public async Task<ActionResult> Login([FromBody] LoginRequest loginRequest)
+        public ActionResult Login([FromBody] LoginRequest loginRequest)
         {
-            var validLogin = await _unitOfWork.Accounts.AttemptLogin(loginRequest.Username, loginRequest.Password);
+            var validLogin = _unitOfWork.Accounts.AttemptLogin(loginRequest.Username, loginRequest.Password).Result;
 
             if (validLogin != -1)
             {
