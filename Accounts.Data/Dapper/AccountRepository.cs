@@ -154,7 +154,7 @@ namespace Accounts.Data.Dapper
         /// <returns></returns>
         public async Task<int> AttemptLogin(string username, string password)
         {
-            _logger.LogActivity("New login attemptL " + username);
+            _logger.LogActivity("New login attempt " + username);
             try
             {
                 var procedure = "login";
