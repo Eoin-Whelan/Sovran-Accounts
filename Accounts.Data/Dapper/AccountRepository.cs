@@ -41,7 +41,6 @@ namespace Accounts.Data.Dapper
                     string insertQuery = @"INSERT INTO Merchants(
                                                                 Username, 
                                                                 StripeId, 
-                                                                CatalogId, 
                                                                 MerchantEmail, 
                                                                 PhoneNumber, 
                                                                 Password, 
@@ -58,7 +57,6 @@ namespace Accounts.Data.Dapper
                                                        VALUES ( 
                                                                @Username, 
                                                                @StripeId, 
-                                                               @CatalogId, 
                                                                @MerchantEmail, 
                                                                @PhoneNumber, 
                                                                @Password, 
