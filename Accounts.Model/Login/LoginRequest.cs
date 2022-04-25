@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Accounts.Model.Login
 {
+    /// <summary>
+    /// Main container class for a given login request.
+    /// </summary>
     public class LoginRequest
     {
         public string Username { get; set; }
