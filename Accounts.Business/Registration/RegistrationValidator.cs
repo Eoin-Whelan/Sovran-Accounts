@@ -50,8 +50,9 @@ namespace Accounts.Business.Registration
 
             try
             {
+                var doesExist = _unitOfWork.Accounts.DoesExist(request.NewAccount.Username);
                 //  If username is unique
-                if (!_unitOfWork.Accounts.DoesExist(request.NewAccount.Username).Result)
+                if (!doesExist)
                 {
 
                     _logger.LogActivity("Cloudinary flow began.");

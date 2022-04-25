@@ -18,6 +18,6 @@ namespace Accounts.Data.Contracts
         Task<int> UpdateAsync(MerchantAccount entity);
         Task<int> AttemptLogin(string username, string password);
         Task<string> GetStripeAccount(string username);
-        Task<bool> DoesExist(string username);
+        bool DoesExist(string username);
     }
 }
