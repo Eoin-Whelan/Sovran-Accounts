@@ -2,6 +2,7 @@
 using Accounts.Business.Update;
 using Accounts.Data.Contracts;
 using Accounts.Model;
+using Accounts.Model.Login;
 using Accounts.Model.Registration;
 using Microsoft.AspNetCore.Mvc;
 using Sovran.Logger;
@@ -174,9 +175,9 @@ namespace AccountService.Controllers
         /// <returns></returns>
         [Route("/Account/Login")]
         [HttpPost]
-        public async Task<ActionResult> Login(string username, string password)
+        public async Task<ActionResult> Login([FromBody] LoginRequest loginRequest)
         {
-            var validLogin = await _unitOfWork.Accounts.AttemptLogin(username, password);
+            var validLogin = await _unitOfWork.Accounts.AttemptLogin(loginRequest.Username, loginRequest.Password);
 
             if (validLogin != -1)
             {
